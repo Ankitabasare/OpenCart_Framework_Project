@@ -4,7 +4,7 @@ pipeline {
 
     tools {
         maven 'Maven'
-        jdk 'JDK17'
+        jdk 'JDK21'
     }
 
     stages {
@@ -36,16 +36,20 @@ pipeline {
         always {
             echo 'Publishing test results...'
 
-            junit allowEmptyResults: true,
-                  testResults: '**/target/surefire-reports/*.xml'
+            junit(
+                allowEmptyResults: true,
+                testResults: '**/target/surefire-reports/*.xml'
+            )
 
-            archiveArtifacts artifacts: '''
-                reports/**/*,
-                screenshots/**/*,
-                logs/**/*,
-                target/surefire-reports/**/*
-            ''',
-            allowEmptyArchive: true
+            archiveArtifacts(
+                artifacts: '''
+                    reports/**/*,
+                    screenshots/**/*,
+                    logs/**/*,
+                    target/surefire-reports/**/*
+                ''',
+                allowEmptyArchive: true
+            )
         }
 
         success {
